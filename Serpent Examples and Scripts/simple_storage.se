@@ -1,0 +1,9 @@
+def init():
+	self.storage[msg.sender] = 1000
+def code():
+	to = msg.data[0]
+	from = msg.sender
+	value = msg.data[1]
+	if self.storage[from] >= value:
+		self.storage[from] = self.storage[from]  - value
+		self.storage[to] = self.storage[to] + value
