@@ -1,0 +1,29 @@
+# oscrecvutest.srp -- example receiving OSC messages using O2 functions
+
+
+def osc_handler(timestamp, path, types, rest parameters)
+    display "osc_handler", timestamp, path, types, parameters
+
+def startup()
+    // note that the first parameter can be any application name -- it does
+    //    not have to match that of the sender
+    display "oscserver", o2_initialize("o2osc", t)
+    display "oscserver", o2_service_new("oscrecv") // create service
+    // attach a handler to the service, parameters are the path to handle,
+    // the types expected, the handler (function name, a symbol), and coerce
+    // flag that tells O2 to convert to the specified type(s) if possible
+    display "oscserver", o2_method_new("/oscrecv/afloat", "f", 'osc_handler', true)
+    // create receive port for OSC messages, which are forwarded to the service
+    //    named by the first parameter. Port number is 7770, and false means UDP.
+
+    display "oscserver", o2_osc_port_new("oscrecv", 7770, false)
+
+
+
+def run()
+    startup()
+    while true
+        o2_server_poll()
+        time_sleep(0.1)
+
+run()

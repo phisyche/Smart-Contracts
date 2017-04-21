@@ -1,0 +1,19 @@
+# osc-send-test -- send messages over OSC
+# RBD
+#
+# this is a companion to osc-server-test.srp
+
+def startup()
+    addr = osc_create_address("", "7770", false)
+
+def send_afloat()
+    osc_send_start()
+    osc_add_float(3.14159)
+    osc_send(addr, "/afloat")
+
+def run()
+    startup()
+    while true
+        send_afloat()
+        time_sleep(3.0)
+

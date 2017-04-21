@@ -1,0 +1,34 @@
+# quit_close_test.srp -- demonstrate how to take control when user quits
+#   program or closes a window
+
+
+require "debug"
+require "wxserpent"
+
+win = default_window
+win.method = 'win_handler'
+
+file_menu = win.get_menu("File")
+// parameters are Menu item name, Help string, Checkable, Target, Method:
+file_menu.item("Quit", "quit the application", nil, nil, 'quit_handler')
+
+display "file quit", file_menu.map, file_menu.menu
+
+def quit_handler(obj, event, x, y):
+    display "quit_handler", obj, event, x, y
+    var quit = wxs_message_box("Do you really want to quit?",
+                               "Quit selected", WXS_STYLE_YES_NO, win.id)
+    display "message box returns", quit, WXS_MSG_NO, WXS_MSG_YES
+    // The default is that this handler performed the request, so no
+    // further action (e.g. really quit the application) is performed.
+    // We override this default by calling wxs_event_not_handled().
+    if quit == WXS_MSG_YES:
+        wxs_event_not_handled()
+
+def win_handler(obj, event, x, y):
+    display "win_handler", obj, event, x, y, WXS_CLOSE_WINDOW
+    if event == WXS_CLOSE_WINDOW:
+        var close = wxs_message_box("Do you really want to close?",
+                               "Close", WXS_STYLE_YES_NO, win.id)
+        if close == WXS_MSG_YES:
+            wxs_event_not_handled()

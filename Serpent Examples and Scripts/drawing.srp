@@ -1,0 +1,64 @@
+require "debug"
+require "wxserpent"
+
+// create a subclass of Canvas -- you need to subclass Canvas in
+// order to override the paint() method, which is how you make
+// custom graphics
+//
+class Drawing (Canvas)
+    // the state is an array of lines, where each line is an array
+    // of x1, y1, x2, y2 coordinates for the endpoints of lines
+    var lines
+    var mouse_is_down
+
+    // override init() in order to intialize the state of this
+    // subclass, but pass the usuall parent, x, y, w, h parameters
+    // to the init() method defined in the Canvas class so that
+    // the Canvas state is also initialized.
+    //
+    def init(parent, x, y, w, h)
+        super.init(parent, x, y, w, h)
+        lines = []
+
+    // override paint to do custom drawing
+    //
+    def paint(x)
+        for line in lines
+            draw_line(line[0], line[1], line[2], line[3])
+
+    // override handle to handle mouse events
+    //
+    def handle(event, x, y)
+        var line
+        if event == WXS_LEFT_DOWN
+            // maybe user went outside of canvas an released button
+            // and reentered canvas. If we think the mouse is down,
+            // ignore this mouse down event and wait for mouse up
+            // (inside the canvas where we can "see" it
+            if mouse_is_down
+                return
+            line = [x, y, x, y]
+            lines.append(line)
+            mouse_is_down = true
+        elif event == WXS_MOVE and mouse_is_down
+            // change the end-point of the last line to follow the mouse
+            line = lines.last()
+            line[2] = x
+            line[3] = y
+        // It might be possible to receive a mouse up without a mouse down
+        // E.g. the mouse down might be captured by the window system to
+        // change the focus to this canvas, and the mouse down might not
+        // be delivered to the canvas. In that case, ignore the mouse-up
+        // event because we have not received a mouse down yet.
+        elif event == WXS_LEFT_UP and mouse_is_down
+            line = lines.last()
+            line[2] = x
+            line[3] = y
+            mouse_is_down = false
+        else // could be keyboard input
+            return // no state change, so return
+        // State has changed. Request redraw.
+        refresh(true)
+
+// create a canvas to draw on
+drawing = Drawing(WXS_DEFAULT_WINDOW, 0, 0, 200, 200)

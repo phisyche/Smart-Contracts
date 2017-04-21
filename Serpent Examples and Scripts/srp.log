@@ -1,0 +1,23 @@
+hidebug.srp created srp.log for error report...
+runtime exception handler called
+exception is: [31;49mglobal variable is unbound - a[39;49m
+frame variables: {}
+frame pc: 3
+frame method: <immediate command 0>
+frame class: nil
+
+Debugger invoked.
+-----------------------------------------------------
+Method [32;49m<global>[39;49m in class [34;49mnil[39;49m
+-----------------------------------------------------
+Method [32;49m<callin_method>[39;49m in class [34;49mnil[39;49m
+-----------------------------------------------------
+Method [32;49m<immediate command 0>[39;49m in class [34;49mnil[39;49m, char 14 in <stdin>
+[31;49mglobal variable is unbound - a[39;49m
+1> debugger reads >
+Resume execution...
+hi: 1 = 1, 2 = 2, 3 = 3, -> nil
+4 = 4, 5 = 5, 6 = 6
+-> nil
+hi: 1 = 1, 2 = 2, 3 = 3, 4 = 4, 5 = 5, 6 = 6
+-> nil

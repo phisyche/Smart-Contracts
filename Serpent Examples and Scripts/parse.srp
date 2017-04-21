@@ -1,0 +1,25 @@
+# parse.srp
+
+
+require "debug"
+// String_parser is not built-in, so you must load the
+// code if it has not already been loaded...
+require "strparse"
+
+# return an array of fields from an input string
+#
+def fields(s)
+    var sp = String_parse(s) // create and initialize the
+                              // String_parser object
+    var result = [] // create empty array to accumulate results
+    sp.skip_space() // this is not necessary -- just illustrating
+    var field = sp.get_nonspace() // parse out a field
+    while field != "" // get all the fields
+        result.append(field) // append each field to array
+        field = sp.get_nonspace()
+    return result
+
+# test it
+#
+print "fields(\"This is a test 123 %$&!\") returns",
+print fields("This is a test 123 %$&!")

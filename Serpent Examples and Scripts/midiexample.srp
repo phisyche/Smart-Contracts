@@ -1,0 +1,33 @@
+# midiexample.srp
+
+
+require "debug"
+
+def midi_example()
+    var midi_out = midi_create() // create an unopened PortMidi stream
+    var midi_dev = midi_out_default() // find default device number
+    // Note: you can query and select available devices, but much
+    // simpler to open the default device. Choose the default with the
+    // PmDefault application in PortMidi
+    if midi_open_output(midi_out, midi_dev, 100, 10) != 0
+        print "Error opening default MIDI device for output"
+        return
+    display "sending first MIDI message", time_get()
+    // play a note
+    var now = int(time_get() * 1000) // integer milliseconds
+    for i = 0 to 20
+        now = now + 100
+        time_sleep(now / 1000 - time_get()) // wait until now
+        var note_on = chr(0x90) + chr(60 + i) + chr(100)
+        midi_write(midi_out, now, note_on)
+        now = now + 100
+        time_sleep(now / 1000 - time_get()) // wait until now
+        var note_off = chr(0x90) + chr(60 + i) + chr(0)
+        midi_write(midi_out, now, note_off)
+    display "last MIDI message sent", time_get()
+    time_sleep(1.0) // make sure all notes play before closing
+    midi_close(midi_out)
+
+# test it
+#
+midi_example()

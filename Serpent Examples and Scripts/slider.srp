@@ -1,0 +1,21 @@
+require "wxserpent"
+
+// WXS_DEFAULT_WINDOW is the initial window created automatically
+// when you run wxserpent. It's the parent of my_slider, but you
+// could open another window and put the slider there instead.
+// Parameters are parent, minimum value (an integer), maximum value
+// (an integer), initial value (an integer), x, y, width, height
+// (all coordinates and sizes are integers):
+
+my_slider = Slider(WXS_DEFAULT_WINDOW, 0, 127, 0, 5, 10, 100, 20)
+my_slider.method = 'my_slider_handler' // function to call
+
+def my_slider_handler(obj, event, x, y)
+    print "my_slider hit", event, "value:", x
+    my_gauge.set_value(x) // forward reference to object created next...
+
+// A Gauge is an "analog" value indicator something like one bar of a
+// bar graph. The parameters are parent window, range (an integer), and
+// x, y, width, height bounding box coordinates (all integers):
+my_gauge = Gauge(WXS_DEFAULT_WINDOW, 127, 5, 50, 100, 10)
+

@@ -1,0 +1,27 @@
+# oscsendtest.srp -- example sending OSC messages using O2 functions
+
+
+def startup()
+    o2_initialize("o2osc", t) // string is the O2 application name, t for debug
+    // parameters are: service name, IP address (string), port (int), use TCP flag
+    o2_osc_delegate("oscsend", "localhost",&nbsp;7770, false) // use UDP
+
+def send_afloat()
+    o2_send_start()
+    o2_add_float(3.14159)
+    // parameters are: timestamp (0 for now), address (note that it starts with
+    //  the service name, and reliable (tcp) transmission flag (in this case,
+    //  the ultimate transmission is controlled by the flag to o2_osc_delegate,
+    //  which says send via UDP to the OSC server. The OSC server is probably
+    //  using UDP; if so, you must delegate via UDP or you'll never connect.
+    o2_send_finish(0.0, "/oscsend/afloat", false)
+
+
+def run()
+    startup()
+    while true
+        send_afloat()
+        time_sleep(3.0)
+
+
+run()

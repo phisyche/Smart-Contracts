@@ -1,0 +1,49 @@
+# filesort.srp
+
+
+require "debug"
+
+# sort lines in in_file and write result to out_file
+#
+// unless you sort numbers, you must provide a compare function
+def string_gtr(s1, s2)
+    s1 > s2
+
+def filesort(in_file, out_file)
+    var inf = open(in_file, "r")
+    if not inf
+        return "Could not open " + in_file
+    var outf = open(out_file, "w")
+    if not outf
+        return "Could not open " + out_file
+    var content = inf.readlines()
+    inf.close()
+    content.sort('string_gtr')
+    outf.writelines(content)
+    outf.close()
+
+# test it
+#
+filesort("unsorted.txt", "sorted.txt")
+
+# another version that sorts by line length
+#
+def longer(s1, s2)
+    len(s1) > len(s2)
+
+def filesort_by_len(in_file, out_file)
+    var inf = open(in_file, "r")
+    if not inf
+        return "Could not open " + in_file
+    var outf = open(out_file, "w")
+    if not outf
+        return "Could not open " + out_file
+    var content = inf.readlines()
+    inf.close()
+    content.sort('longer')
+    outf.writelines(content)
+    outf.close()
+
+# test it
+#
+filesort_by_len("unsorted.txt", "by-length.txt")
