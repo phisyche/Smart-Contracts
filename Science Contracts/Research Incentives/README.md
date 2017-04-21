@@ -1,0 +1,1 @@
+A reward system for research projects based on views, participation auctioning, participants track records, solution reward and impact in real world settings. An ERC20 Ethereum token is used, with it's economic value being yielded by the auction mechanism of the network participants.
